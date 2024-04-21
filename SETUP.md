@@ -1,4 +1,6 @@
 - Create .env file with the following vars:
-    - ```DATABASE_URL=<db_path>```
+  - `DATABASE_URL=<db_path>`
+  - `ADMIN_USERNAME=<admin_username>`
+  - `ADMIN_PASSWORD_HASH=<admin_password_hash>` base64 encoded password
 - Install git and add to environment variables
-- Run ```sh steup.sh```
+- Run `sh steup.sh`
