@@ -6,19 +6,32 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { formatCurrency } from "@/lib/formatters";
 import React, { useState } from "react";
-import { addProduct } from "../../_actions/products";
+import { addProduct, updateProduct } from "../../_actions/products";
 import { useFormState, useFormStatus } from "react-dom";
+import { Product } from "@prisma/client";
+import Image from "next/image";
 
-const ProductForm = () => {
-  const [error, action] = useFormState(addProduct, {});
-  const [priceInCents, setPriceInCents] = useState<number>(0);
+const ProductForm = ({ product }: { product?: Product | null }) => {
+  const [error, action] = useFormState(
+    product == null ? addProduct : updateProduct.bind(null, product.id),
+    {}
+  );
+  const [priceInCents, setPriceInCents] = useState<number | undefined>(
+    product?.priceInCents || 0
+  );
   return (
     <form action={action} className="space-y-0">
       <div className="py-2">
         <Label htmlFor="name">
           Name <span className="text-red-600">*</span>
         </Label>
-        <Input type="text" id="name" name="name" required />
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={product?.name || ""}
+          required
+        />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="py-2">
@@ -47,7 +60,12 @@ const ProductForm = () => {
         <Label htmlFor="description">
           Description <span className="text-red-600">*</span>
         </Label>
-        <Textarea id="description" name="description" required />
+        <Textarea
+          id="description"
+          name="description"
+          defaultValue={product?.description || ""}
+          required
+        />
         {error.description && (
           <div className="text-destructive">{error.description}</div>
         )}
@@ -56,14 +74,25 @@ const ProductForm = () => {
         <Label htmlFor="file">
           File <span className="text-red-600">*</span>
         </Label>
-        <Input type="file" id="file" name="file" required />
+        <Input type="file" id="file" name="file" required={product == null} />
+        {product !== null && (
+          <div className="text-muted-foreground">{product?.filePath}</div>
+        )}
         {error.file && <div className="text-destructive">{error.file}</div>}
       </div>
       <div className="py-2">
         <Label htmlFor="image">
           Image <span className="text-red-600">*</span>
         </Label>
-        <Input type="file" id="image" name="image" required />
+        <Input type="file" id="image" name="image" required={product == null} />
+        {product != null && (
+          <Image
+            src={product.imagePath}
+            width={200}
+            height={200}
+            alt="Product Image"
+          />
+        )}
         {error.image && <div className="text-destructive">{error.image}</div>}
       </div>
       <div className="text-red-600 py-2">* is required</div>
