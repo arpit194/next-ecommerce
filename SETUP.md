@@ -1,0 +1,4 @@
+- Create .env file with the following vars:
+    - ```DATABASE_URL=<db_path>```
+- Install git and add to environment variables
+- Run ```sh steup.sh```

@@ -40,6 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ```shell
 npx prisma init --datasource-provider sqlite
 npx prisma migrate dev --name init
+npx prisma generate
 npx shadcn-ui@latest init
 npx shadcn-ui@latest add card
 ```
