@@ -9,6 +9,9 @@
 .env
 dev.db
 dev.db-journal
+/products
+/public/products
+.vscode
 
 # testing
 /coverage
